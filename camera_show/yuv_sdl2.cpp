@@ -58,6 +58,7 @@ int main()
 
     //������ͷ�豸
     int fd = open(DEV_CAMERA,O_RDWR);
+    
     if(fd < 0)
         errmsg("open");
     
@@ -72,7 +73,7 @@ int main()
         return -1;
     }
     printf("%s \n%s\n%s\n %08x %08x\n",cap.driver,cap.card,cap.bus_info,cap.version,cap.capabilities);
-    printf("V4L2_CAP_VIDEO_CAPTURE = %08x    %d \n",V4L2_CAP_VIDEO_CAPTURE,V4L2_CAP_VIDEO_CAPTURE&cap.capabilities);
+    //printf("V4L2_CAP_VIDEO_CAPTURE = %08x    %d \n",V4L2_CAP_VIDEO_CAPTURE,V4L2_CAP_VIDEO_CAPTURE&cap.capabilities);
 
     if(!(V4L2_CAP_VIDEO_CAPTURE&cap.capabilities))
     {
