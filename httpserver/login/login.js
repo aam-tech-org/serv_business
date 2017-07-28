@@ -92,6 +92,32 @@ function login_postput(req , res)
     res.end(sendstr);
 }
 
+function test(req , res)
+{
+    var statusitem = '';
+    var seqid = '';
+    var useriditem = '';
+    if (req.body) {
+        if(req.body.seqid)
+            seqid = req.body.seqid;
+        if(req.body.userid)
+            useriditem = '\"userid\": \"' + req.body.userid + '\", ';
+        if(accountdata.verifytoken(req.body.userid, req.body.token))
+            statusitem = '\"status\": \"0\"';
+        else
+            statusitem = '\"status\": \"' + error_code.error_token_verify + '\"';
+    }
+    else
+        statusitem = '\"status\": \"' + error_code.error_json_format + '\"';
+    res.statusCode = 200;
+    res.setHeader('Content-Type', 'application/json');
+
+    var sendstr;
+
+    sendstr = '{ \"seqid\": \"' + seqid + '\", ' + useriditem + statusitem + '}';
+    res.end(sendstr);
+}
+
 module.exports =
     {
         cb_get_login:function (req , res)
@@ -114,6 +140,10 @@ module.exports =
         cb_put_login:function (req, res)
         {
             login_postput(req , res);
+        },
+        cb_put_test:function (req, res)
+        {
+            test(req, res);
         }
     };
 

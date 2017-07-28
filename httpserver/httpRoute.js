@@ -1,5 +1,4 @@
 var routelogin = require('./routeLogin');
-var routetrade = require('./routeTrade');
 
 module.exports =
     {

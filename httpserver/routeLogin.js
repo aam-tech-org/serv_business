@@ -23,6 +23,8 @@ var httplogictable =
                 //{path: "/logout", meghod: ENUM_HTTP_REQUEST.GET, func: logout.cb_get_logout, json: null},
                 //{path: "/logout", meghod: ENUM_HTTP_REQUEST.POST, func: logout.cb_post_logout, json: 1},
                 //{path: "/logout", meghod: ENUM_HTTP_REQUEST.PUT, func: logout.cb_put_logout, json: 1}
+                {path: "/test", method: ENUM_HTTP_REQUEST.PUT, func: login.cb_put_test, json: 1},
+                {path: "/test", method: ENUM_HTTP_REQUEST.POST, func: login.cb_put_test, json: 1}
             ]
     };
 
