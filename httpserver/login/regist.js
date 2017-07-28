@@ -1,31 +1,24 @@
 
-var userdata = require('./userdata');
+const common = require('../common');
+//var userdata = require('./userdata');
+var accountdata = require('../module/sysAccount');
 
 ////
+const error_code = common.error_code;
 
-const ENUM_REGISTER_ERROR_CODE =
-    {
-        //login
-        "error_json_format": "register:101",
-        "error_noaccount": "register:102",
-        "error_nopasswd": "register:103",
-
-        "error_account_exist": "register:201",
-        "error_account_noexist": "register:202",
-    };
 
 function regiter(userid, body)
 {
     if(userid==null)
-        return '\"status\": \"' + ENUM_REGISTER_ERROR_CODE.error_noaccount + '\"';
+        return '\"status\": \"' + error_code.error_noaccount + '\"';
     if(body.passwd==null || body.passwd=='')
-        return '\"status\": \"' + ENUM_REGISTER_ERROR_CODE.error_nopasswd + '\"';
-    if(userdata.find(userid))
-        return '\"status\": \"' + ENUM_REGISTER_ERROR_CODE.error_account_exist + '\"';
-    if(userdata.save(body))
+        return '\"status\": \"' + error_code.error_nopasswd + '\"';
+    if(accountdata.find(userid))
+        return '\"status\": \"' + error_code.error_account_exist + '\"';
+    if(accountdata.save(body))
         return '\"status\": \"0\"';
     else
-        return '\"status\": \"' + ENUM_REGISTER_ERROR_CODE.error_json_format + '\"';
+        return '\"status\": \"' + error_code.error_json_format + '\"';
 }
 
 function register_postput(req , res)
@@ -42,7 +35,7 @@ function register_postput(req , res)
         statusitem = regiter(req.body.userid, req.body);
     }
     else
-        statusitem = '\"status\": \"' + ENUM_REGISTER_ERROR_CODE.error_json_format + '\"';
+        statusitem = '\"status\": \"' + error_code.error_json_format + '\"';
     res.statusCode = 200;
     res.setHeader('Content-Type', 'application/json');
 
@@ -56,10 +49,6 @@ module.exports =
     {
         cb_get_register:function (req , res)
         {
-            //m.set('name','foo');
-            //m.set('guest',{userid:'guest', usertype:'account', mobile:'13800010007', name:'hello'});
-            //var s = m.get('name');
-            //login(req, res, 'GET');
             res.statusCode = 200;
             res.setHeader('Content-Type', 'text/plain');
             res.end('GET regist\n');

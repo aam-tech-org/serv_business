@@ -1,26 +1,19 @@
 
-
+const common = require('../common');
 var userdata = require('./userdata');
 
+const error_code = common.error_code;
 ////
-
-const ENUM_LOGOUT_ERROR_CODE =
-    {
-        //logout
-        "error_json_format": "logout:101",
-        "error_noaccount": "logout:102",
-        "error_token_verify": "logout:103",
-    };
 
 function logout(userid, token)
 {
     if(userid==null)
-        return '\"status\": \"' + ENUM_LOGOUT_ERROR_CODE.error_noaccount + '\"';
+        return '\"status\": \"' + error_code.error_noaccount + '\"';
 
     if(userdata.deltoken(userid, token))
         return '\"status\": \"0\"';
     else
-        return '\"status\": \"' + ENUM_LOGOUT_ERROR_CODE.error_token_verify + '\"';
+        return '\"status\": \"' + error_code.error_token_verify + '\"';
 }
 
 function logout_postput(req , res)
@@ -37,7 +30,7 @@ function logout_postput(req , res)
         statusitem = logout(req.body.userid, req.body.token);
     }
     else
-        statusitem = '\"status\": \"' + ENUM_LOGOUT_ERROR_CODE.error_json_format + '\"';
+        statusitem = '\"status\": \"' + error_code.error_json_format + '\"';
     res.statusCode = 200;
     res.setHeader('Content-Type', 'application/json');
 

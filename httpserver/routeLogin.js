@@ -4,13 +4,9 @@ const logout = require('./login/logout');
 const bodyParser = require('body-parser');
 const jsonParser = bodyParser.json();
 
-const ENUM_HTTP_REQUEST =
-    {
-        "POST":0,
-        "PUT":1,
-        "GET":2,
-        "DELETE":3
-    };
+const common = require('./common');
+
+const ENUM_HTTP_REQUEST = common.ENUM_HTTP_REQUEST;
 
 const HEAD_ROUTE = "/login";
 

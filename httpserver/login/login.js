@@ -1,23 +1,12 @@
 
-var userdata = require('./userdata');
+const common = require('../common');
+//var userdata = require('./userdata');
+var accountdata = require('../module/sysAccount');
+
 var loginsum = 0;
 ////
 
-const ENUM_LOGIN_ERROR_CODE =
-    {
-        //login
-        "error_json_format": "login:101",
-        "error_noaccount": "login:102",
-        "error_nopasswd": "login:103",
-
-        "error_account_noexist": "login:201",
-        "error_account_or_passwd_fail": "login:202",
-
-        "error_login_already_in": "login:210",
-        "error_login_already_out": "login:211",
-        "error_login_in_timeout": "login:212"
-    };
-
+const error_code = common.error_code;
 
 function GetRandomNum(Min,Max) {
     var Range = Max - Min;
@@ -55,28 +44,28 @@ function login(userid, passwd)
     loginsum ++;
 
     if(userid==null)
-        return '\"status\": \"' + ENUM_LOGIN_ERROR_CODE.error_noaccount + '\"';
+        return '\"status\": \"' + error_code.error_noaccount + '\"';
     if(passwd==null)
-        return '\"status\": \"' + ENUM_LOGIN_ERROR_CODE.error_nopasswd + '\"';
+        return '\"status\": \"' + error_code.error_nopasswd + '\"';
 
     var token = GenToken();
-    if(userdata.verifypasswd_savetoken(userid, passwd, token))
+    if(accountdata.verifypasswd_savetoken(userid, passwd, token))
         return '\"token\": \"' + token + '\", \"status\": \"0\"';
     else
-        return '\"status\": \"' + ENUM_LOGIN_ERROR_CODE.error_account_or_passwd_fail + '\"';
+        return '\"status\": \"' + error_code.error_account_or_passwd + '\"';
 }
 
 function logintoken(userid, token)
 {
     if(userid==null)
-        return '\"status\": \"' + ENUM_LOGIN_ERROR_CODE.error_noaccount + '\"';
+        return '\"status\": \"' + error_code.error_noaccount + '\"';
     if(passwd==null)
-        return '\"status\": \"' + ENUM_LOGIN_ERROR_CODE.error_nopasswd + '\"';
+        return '\"status\": \"' + error_code.error_nopasswd + '\"';
 
-    if(userdata.verifypasswd(userid, passwd))
+    if(accountdata.verifypasswd(userid, passwd))
         return '\"status\": \"0\"';
     else
-        return '\"status\": \"' + ENUM_LOGIN_ERROR_CODE.error_account_or_passwd_fail + '\"';
+        return '\"status\": \"' + error_code.error_account_or_passwd + '\"';
 }
 
 function login_postput(req , res)
@@ -93,7 +82,7 @@ function login_postput(req , res)
         statusitem = login(req.body.userid, req.body.passwd);
     }
     else
-        statusitem = '\"status\": \"' + ENUM_LOGIN_ERROR_CODE.error_json_format + '\"';
+        statusitem = '\"status\": \"' + error_code.error_json_format + '\"';
     res.statusCode = 200;
     res.setHeader('Content-Type', 'application/json');
 
@@ -125,11 +114,70 @@ module.exports =
         cb_put_login:function (req, res)
         {
             login_postput(req , res);
-            //res.statusCode = 200;
-            //res.setHeader('Content-Type', 'text/plain');
-            //res.end('PUT login\n');
         }
     };
+
+/*
+//////////
+module.exports =
+    (
+        function sysLogin(){
+            var instance =
+                {
+                    login:function (req, res) {
+                        //
+                        var id ....
+                        var account = this.ACCOUNT_DATA[id];
+
+                        //check
+                        account...
+
+                    },
+                    logout:function () {
+
+                    },
+                    regist:function () {
+
+                    },
+                };
+
+            return instance;
+        }
+    )();
+
+module.exports =
+    (function sysAccount(){
+        var instance =
+            {
+                ACCOUNT_DATA:{},
+
+                checkConn:function (...) {
+                    //
+
+                    return ...isconn;
+                },
+
+
+
+
+            };
+
+        return instance;
+    })();
+
+    module.exports =
+        (
+            function sysLogic()
+            {
+                var instance =
+                    {
+
+                    };
+
+                return instance;
+            }
+        )();
+*/
 
 //exports.cb_get_login = function (req, res) {
 //}
