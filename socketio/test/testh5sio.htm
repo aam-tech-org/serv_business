@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style>
+div{
+    border-radius: 10px;
+    border: 2px solid pink;
+    width:800px;
+}
+</style>
+</head>
+<body>
+<h1></h1>
+<div id="result"></div>
+<script src="http://10.0.2.67/socket.io/socket.io.js"></script>
+<script>
+//创建Socket.IO实例，建立连接
+
+//var socket = io.connect('http://10.0.2.67:8098');
+//var socket = io.connect('http://39.108.71.104:8098');
+//var socket = io('http://10.0.2.67:8098', {
+//    path: '/test'
+//});
+var socket = io('http://39.108.71.104:8098', {
+    path: '/test'
+});
+//var socket = io.connect('http://10.0.2.67:8098/test'); // 这样连接不到路径
+
+// 添加一个连接监听器
+socket.on('connect',function() {
+    //alert('socket.id = ' + socket.id);
+    //alert('connected http://10.0.2.67:8098');
+    document.getElementById("result").innerHTML+='socket.id = ' + socket.id + "<br />";
+    document.getElementById("result").innerHTML+='connected :' + socket.ip + socket.path + "<br />";
+    //console.log('Client has connected to the server!');
+    //socket.emit('h5data', 'haha, server, is me!');
+});
+
+// 添加一个连接监听器
+socket.on('rsph5',function(data) {
+    //alert(JSON.stringify(data));
+    document.getElementById("result").innerHTML+= 'event \"rsph5\" from server: ' + JSON.stringify(data) + "<br />";
+    //socket.emit('h5data', 'haha, server, is me!');
+});
+socket.on('message',function(data) {
+  document.getElementById("result").innerHTML+=data + "<br />";
+ 
+});
+socket.on('emitMessage',function(data) { 
+  document.getElementById("result").innerHTML+=data.hello + "<br />";
+ 
+});
+
+// 添加一个关闭连接的监听器
+socket.on('disconnect',function() { 
+  console.log('The client has disconnected!'); 
+}); 
+
+// 通过Socket发送一条消息到服务器
+function sendMessageToServer(message) {
+    socket.emit('h5data', 'haha, server, is me!');
+    setTimeout("sendMessageToServer(ms)", 1000);
+}
+var date = new Date();
+var ms="Time: "+date.toString()+"Today is a nice day, wish you happy";
+setTimeout("sendMessageToServer(ms)", 1000);
+
+</script>
+
+</body>
+</html>

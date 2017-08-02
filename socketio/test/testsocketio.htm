@@ -1,0 +1,40 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+
+</head>
+
+<body >
+<script src="http://127.0.0.1/socket.io/socket.io.js"></script>
+<script>
+    var socket = io.connect('http://127.0.0.1:8098');
+    alert(socket.id);
+    socket.on('connect', function(io) {
+        alert('connected http://127.0.0.1:8098');
+        console.log(socket.id); // 'G5p5...'
+        socket.emit('my other event', 'Hi, server.');
+    }
+    socket.on('news', function (data) {
+        console.log(data);
+        socket.emit('my other event', { my: 'data' });
+    });
+    function sendMessage() {
+        socket.emit('my other event', $('#message').val());
+    }
+</script>
+    <div class="vertical-center">
+        <div class="container">
+            <p>&nbsp;</p>
+            <form role="form" id="chat_form" onsubmit="sendMessage(); return false;">
+                <div class="form-group">
+                    <input class="form-control" type="text" name="message" id="message"
+                           placeholder="Type text to echo in here" value="" />
+                </div>
+                <button type="button" id="send" class="btn btn-primary"
+                        onclick="sendMessage();">
+                    Send!
+                </button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
